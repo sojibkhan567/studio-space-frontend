@@ -50,6 +50,7 @@ const steps: {
 export default function HowItWorks() {
   return (
     <section
+      id="how-it-works"
       aria-labelledby="how-heading"
       className="bg-background py-16 sm:py-24"
     >

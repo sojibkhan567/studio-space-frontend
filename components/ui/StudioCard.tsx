@@ -37,7 +37,7 @@ export default function StudioCard({ studio }: { studio: Studio }) {
           className="object-cover transition duration-500 group-hover:scale-105"
         />
         {/* Bottom fade so price stays readable on any photo */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/70 to-transparent" />
 
         <Badge className="absolute top-3 left-3 rounded-full border border-green-400/40 bg-green-950/70 px-3 py-1 text-xs font-semibold text-green-300 backdrop-blur hover:bg-green-950/70">
           {studio.category}
@@ -52,7 +52,7 @@ export default function StudioCard({ studio }: { studio: Studio }) {
         >
           <Heart
             className={cn(
-              "h-[18px] w-[18px] transition",
+              "h-4.4 w-4.5 transition",
               saved && "fill-red-500 text-red-500"
             )}
           />
