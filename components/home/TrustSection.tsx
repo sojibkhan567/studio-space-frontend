@@ -1,12 +1,7 @@
-// components/TrustSection.tsx  (Tailwind + shadcn/ui, green primary, light + dark)
-// Setup: npx shadcn@latest add button card
-
 import Link from "next/link"
 import {
-  Aperture,
   ArrowRight,
   Headset,
-  Heart,
   ShieldCheck,
   UserCheck,
   Wrench,
@@ -46,24 +41,6 @@ const stats = [
   { value: "100%", label: "ID-verified users" },
 ]
 
-const guarantees: { title: string; text: string; icon: LucideIcon }[] = [
-  {
-    title: "Host Guarantee",
-    text: "Comprehensive liability & gear protection",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Verified Workspaces",
-    text: "Inspected acoustics, power, & gear",
-    icon: Aperture,
-  },
-  {
-    title: "Creator First",
-    text: "Zero hidden fees, transparent booking",
-    icon: Heart,
-  },
-]
-
 export default function TrustSection() {
   return (
     <section
@@ -73,7 +50,7 @@ export default function TrustSection() {
       {/* Soft green glow behind the cards */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-10 -right-40 h-[420px] w-[420px] rounded-full bg-primary/10 blur-3xl"
+        className="pointer-events-none absolute top-10 -right-40 h-105 w-105 rounded-full bg-primary/10 blur-3xl"
       />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:px-10">
@@ -182,26 +159,6 @@ export default function TrustSection() {
               </li>
             )
           })}
-        </ul>
-      </div>
-
-      {/* Trust strip */}
-      <div className="relative border-t bg-background/60">
-        <ul className="mx-auto grid max-w-7xl gap-6 px-5 py-8 sm:grid-cols-3 sm:px-8 lg:px-10">
-          {guarantees.map(({ title, text, icon: Icon }) => (
-            <li key={title} className="flex items-center gap-3">
-              <span
-                aria-hidden="true"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"
-              >
-                <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
-              </span>
-              <div className="leading-tight">
-                <p className="text-sm font-semibold text-foreground">{title}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">{text}</p>
-              </div>
-            </li>
-          ))}
         </ul>
       </div>
     </section>

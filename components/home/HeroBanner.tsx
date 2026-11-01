@@ -8,7 +8,6 @@
 import { useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Bricolage_Grotesque } from "next/font/google"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { A11y, Autoplay, EffectFade, Keyboard } from "swiper/modules"
 import type { Swiper as SwiperType } from "swiper"
@@ -56,7 +55,7 @@ export default function HeroSlider() {
     <section
       aria-roledescription="carousel"
       aria-label="Featured studios"
-      className="relative h-[88svh] max-h-[820px] min-h-[540px] w-full overflow-hidden bg-[#10151c] text-white"
+      className="relative h-[88svh] max-h-205 min-h-135 w-full overflow-hidden bg-[#10151c] text-white"
     >
       <Swiper
         modules={[A11y, Autoplay, EffectFade, Keyboard]}
@@ -90,12 +89,12 @@ export default function HeroSlider() {
             </div>
 
             {/* Legibility overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#10151c]/90 via-[#10151c]/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#10151c]/70 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-[#10151c]/90 via-[#10151c]/50 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-[#10151c]/70 via-transparent to-transparent" />
 
             {/* Copy: fades up when the slide becomes active */}
             <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-5 sm:px-10 lg:px-16">
-              <div className="max-w-2xl translate-y-6 opacity-0 transition duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none [.swiper-slide-active_&]:translate-y-0 [.swiper-slide-active_&]:opacity-100">
+              <div className="max-w-2xl translate-y-6 opacity-0 transition duration-700 ease-out in-[.swiper-slide-active_&]:translate-y-0 in-[.swiper-slide-active_&]:opacity-100 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none">
                 <p className="mb-4 text-sm font-medium text-green-500">
                   {s.category}
                 </p>
@@ -111,13 +110,13 @@ export default function HeroSlider() {
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
                     href="/studios"
-                    className="rounded-full bg-green-500 px-7 py-3.5 text-base font-semibold text-[#10151c] transition hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                    className="rounded-full bg-green-500 px-7 py-3.5 text-base font-semibold text-[#10151c] transition hover:bg-green-600 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-white"
                   >
                     Explore Studios
                   </Link>
                   <Link
                     href="/studios"
-                    className="rounded-full border-2 border-white/70 px-7 py-3 text-base font-semibold text-white transition hover:border-white hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                    className="rounded-full border-2 border-white/70 px-7 py-3 text-base font-semibold text-white transition hover:border-white hover:bg-white/15 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-white"
                   >
                     Host Your Space
                   </Link>
@@ -135,7 +134,7 @@ export default function HeroSlider() {
             type="button"
             onClick={() => swiperRef.current?.slidePrev()}
             aria-label="Previous slide"
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/50 bg-black/20 backdrop-blur transition hover:bg-white hover:text-[#10151c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/50 bg-black/20 backdrop-blur transition hover:bg-white hover:text-[#10151c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             <svg
               width="18"
@@ -155,7 +154,7 @@ export default function HeroSlider() {
             type="button"
             onClick={() => swiperRef.current?.slideNext()}
             aria-label="Next slide"
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/50 bg-black/20 backdrop-blur transition hover:bg-white hover:text-[#10151c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/50 bg-black/20 backdrop-blur transition hover:bg-white hover:text-[#10151c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             <svg
               width="18"

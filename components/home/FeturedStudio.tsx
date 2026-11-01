@@ -1,4 +1,4 @@
-import StudioCard, { Studio } from "../ui/StudioCard"
+import StudioCard, { Studio } from "../common/StudioCard"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
