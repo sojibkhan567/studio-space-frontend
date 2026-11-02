@@ -1,44 +1,21 @@
-"use client"
+import { Button } from "./ui/button"
+import { Moon, Sun } from "lucide-react"
+import { cn } from "cn"
+import { useTheme } from "@wrksz/themes/client"
 
-import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
-import { Sun, Moon, Monitor } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-
-export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return (
-      <Button variant="outline" size="icon" disabled>
-        <Monitor className="size-4" />
-      </Button>
-    )
-  }
-
-  const themes = ["light", "dark", "system"] as const
-
-  const currentIndex = themes.indexOf(theme as (typeof themes)[number])
-
-  const nextTheme = themes[(currentIndex + 1) % themes.length]
-
-  const Icon = theme === "light" ? Sun : theme === "dark" ? Moon : Monitor
-
+export function ThemeToggle({ className }: { className?: string }) {
+  const { resolvedTheme, setTheme } = useTheme()
   return (
     <Button
+      type="button"
       variant="outline"
       size="icon"
-      onClick={() => setTheme(nextTheme)}
-      aria-label={`Current theme: ${theme}. Switch to ${nextTheme}`}
-      title={`Theme: ${theme}`}
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      aria-label="Toggle theme"
+      className={cn("h-10 w-10 rounded-full", className)}
     >
-      <Icon className="size-5 transition-all duration-300" />
+      <Moon className="h-4.5 w-4.5 dark:hidden" />
+      <Sun className="hidden h-4.5 w-4.5 dark:block" />
     </Button>
   )
 }

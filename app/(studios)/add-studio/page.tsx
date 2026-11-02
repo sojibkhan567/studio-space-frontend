@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { authClient } from "@/lib/auth-client"
 
 const CATEGORIES = [
   "Photo Studio",
@@ -51,9 +52,6 @@ const AMENITIES = [
   "Electric Ceramic Kiln & Wheels",
   "Industrial Screen Printing Press",
 ]
-
-// Replace with your authenticated user
-const HOST = { name: "Alex Rivera", email: "alex.creator@studiospace.io" }
 
 // Input with a leading icon
 function IconInput({
@@ -111,12 +109,34 @@ export default function AddStudioForm() {
       checked ? [...prev, name] : prev.filter((a) => a !== name)
     )
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { imageUrl: _draft, ...data } = form
     const studioData = { ...data, images, amenities, user: HOST }
-    console.log(studioData)
+
+    // store data into db
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/studios`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(studioData),
+        }
+      )
+
+      const data = await res.json()
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  // Replace with your authenticated user
+  const { data: session } = authClient.useSession()
+  const HOST = { name: session?.user.name, email: session?.user.email }
 
   return (
     <main className="min-h-screen bg-muted/30 px-4 py-10">

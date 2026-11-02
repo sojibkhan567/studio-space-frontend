@@ -1,13 +1,9 @@
 "use client"
 
-// components/Navbar.tsx  (Next.js App Router + Tailwind + shadcn/ui)
-// Setup: npx shadcn@latest add button dropdown-menu sheet avatar
-//        npm i next-themes
-
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
+import { usePathname, useRouter } from "next/navigation"
+
 import {
   CalendarCheck,
   Camera,
@@ -15,8 +11,6 @@ import {
   Heart,
   LogOut,
   Menu,
-  Moon,
-  Sun,
   User,
 } from "lucide-react"
 
@@ -36,7 +30,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { Skeleton } from "@/components/ui/skeleton"
+import { authClient, useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
+import { ThemeToggle } from "./theme-toggle"
 
 const links = [
   { label: "Home", href: "/" },
@@ -45,12 +42,11 @@ const links = [
   { label: "About Us", href: "/about" },
 ]
 
-// Replace with your real session/user
-const user = { name: "Alex", avatar: "" }
-
 const activeCls = "bg-primary/10 font-semibold text-primary"
 const idleCls =
   "font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+
+type NavUser = { name: string; email?: string; image?: string | null }
 
 function Logo() {
   return (
@@ -74,30 +70,18 @@ function Logo() {
   )
 }
 
-function ThemeToggle({ className }: { className?: string }) {
-  const { resolvedTheme, setTheme } = useTheme()
-  return (
-    <Button
-      type="button"
-      variant="outline"
-      size="icon"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      aria-label="Toggle theme"
-      className={cn("h-10 w-10 rounded-full", className)}
-    >
-      {/* Both icons rendered; CSS picks one, so there is no hydration flicker */}
-      <Moon className="h-4.5 w-4.5 dark:hidden" />
-      <Sun className="hidden h-4.5 w-4.5 dark:block" />
-    </Button>
-  )
-}
-
-function UserAvatar({ className }: { className?: string }) {
+function UserAvatar({
+  user,
+  className,
+}: {
+  user: NavUser
+  className?: string
+}) {
   return (
     <Avatar className={cn("h-8 w-8", className)}>
-      <AvatarImage src={user.avatar} alt="" />
+      <AvatarImage src={user.image ?? undefined} alt="" />
       <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
-        {user.name[0]}
+        {user.name?.[0]?.toUpperCase() ?? "U"}
       </AvatarFallback>
     </Avatar>
   )
@@ -105,12 +89,40 @@ function UserAvatar({ className }: { className?: string }) {
 
 export default function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
+
+  const { data: session, isPending } = useSession()
+  const user = session?.user as NavUser | undefined
 
   const isActive = (href: string) => {
     if (href.includes("#")) return false
     return href === "/" ? pathname === "/" : pathname.startsWith(href)
   }
+
+  //logout user
+  const handleLogout = async () => {
+    setOpen(false)
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/")
+          router.refresh()
+        },
+      },
+    })
+  }
+
+  const authButtons = (
+    <div className="flex items-center gap-2">
+      <Button asChild variant="ghost" className="rounded-full">
+        <Link href="/login">Log in</Link>
+      </Button>
+      <Button asChild className="rounded-full">
+        <Link href="/signup">Sign up</Link>
+      </Button>
+    </div>
+  )
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/70">
@@ -137,51 +149,99 @@ export default function Navbar() {
         {/* Desktop right: theme + user */}
         <div className="hidden items-center justify-end gap-3 lg:flex">
           <ThemeToggle />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="flex items-center gap-2 rounded-full border bg-card py-1 pr-3 pl-1 text-sm font-semibold transition outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <UserAvatar />
-                {user.name}
-                <ChevronDown
-                  className="h-4 w-4 text-muted-foreground"
-                  aria-hidden="true"
-                />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/bookings">
-                  <CalendarCheck className="mr-2 h-4 w-4" />
-                  My Bookings
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/saved">
-                  <Heart className="mr-2 h-4 w-4" />
-                  Saved Studios
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600 focus:text-red-600">
-                <LogOut className="mr-2 h-4 w-4" />
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {isPending ? (
+            <Skeleton className="h-10 w-28 rounded-full" />
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="flex items-center gap-2 rounded-full border bg-card py-1 pr-3 pl-1 text-sm font-semibold transition outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <UserAvatar user={user} />
+                  <span className="max-w-30 truncate">{user.name}</span>
+                  <ChevronDown
+                    className="h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/bookings">
+                    <CalendarCheck className="mr-2 h-4 w-4" />
+                    My Bookings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/saved">
+                    <Heart className="mr-2 h-4 w-4" />
+                    Saved Studios
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={handleLogout}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            authButtons
+          )}
         </div>
 
         {/* Mobile: hamburger + sheet */}
         <div className="flex items-center justify-end gap-2 lg:hidden">
           <ThemeToggle />
+          {isPending ? (
+            <Skeleton className="h-8 w-8 rounded-full" />
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button type="button" className="">
+                  <UserAvatar user={user} className="h-10 w-10" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/bookings">
+                    <CalendarCheck className="mr-2 h-4 w-4" />
+                    My Bookings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/saved">
+                    <Heart className="mr-2 h-4 w-4" />
+                    Saved Studios
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={handleLogout}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
@@ -196,19 +256,23 @@ export default function Navbar() {
             <SheetContent side="right" className="w-75 p-0">
               <SheetHeader className="border-b p-5 text-left">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
-                <div className="flex items-center gap-3">
-                  <UserAvatar className="h-10 w-10" />
-                  <div className="leading-tight">
-                    <p className="font-semibold">{user.name}</p>
-                    <Link
-                      href="/profile"
-                      onClick={() => setOpen(false)}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      View profile
-                    </Link>
+                {user ? (
+                  <div className="flex items-center gap-3">
+                    <UserAvatar user={user} className="h-10 w-10" />
+                    <div className="min-w-0 leading-tight">
+                      <p className="truncate font-semibold">{user.name}</p>
+                      <Link
+                        href="/profile"
+                        onClick={() => setOpen(false)}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        View profile
+                      </Link>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <p className="font-semibold">Welcome to Studio Space</p>
+                )}
               </SheetHeader>
 
               <nav aria-label="Mobile" className="flex flex-col gap-1 p-4">
@@ -229,13 +293,33 @@ export default function Navbar() {
               </nav>
 
               <div className="mt-auto border-t p-4">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2 rounded-xl text-red-600"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Log out
-                </Button>
+                {user ? (
+                  <Button
+                    variant="outline"
+                    onClick={handleLogout}
+                    className="w-full justify-start gap-2 rounded-xl text-red-600"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Log out
+                  </Button>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <Button asChild className="w-full rounded-xl">
+                      <Link href="/signup" onClick={() => setOpen(false)}>
+                        Sign up
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full rounded-xl"
+                    >
+                      <Link href="/login" onClick={() => setOpen(false)}>
+                        Log in
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </SheetContent>
           </Sheet>
