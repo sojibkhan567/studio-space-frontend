@@ -1,4 +1,4 @@
-import { Studio, StudioApi } from "@/app/types/studio"
+import type { Studio, StudioApi } from "@/app/types/studio"
 
 // Mongo ObjectIds start with a creation timestamp (first 8 hex chars)
 function timeFromObjectId(id: string): number {
@@ -47,4 +47,19 @@ export async function getStudios(): Promise<Studio[]> {
     : (json.data ?? json.studios ?? [])
 
   return list.map(normalizeStudio)
+}
+
+// Single studio for the details page. Returns null when it doesn't exist.
+export async function getStudioById(id: string): Promise<Studio | null> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/studios/${encodeURIComponent(id)}`,
+    { next: { revalidate: 60 } }
+  )
+  if (res.status === 404 || res.status === 400) return null
+  if (!res.ok) throw new Error(`Failed to load studio (${res.status})`)
+
+  const json = await res.json()
+  // Works if your API returns {...} or { data: {...} } or { studio: {...} }
+  const raw: StudioApi | undefined = json?.data ?? json?.studio ?? json
+  return raw && raw.title ? normalizeStudio(raw) : null
 }

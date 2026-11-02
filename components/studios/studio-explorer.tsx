@@ -1,24 +1,51 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { SortKey, Studio } from "@/app/types/studio"
+import { resolveCategory, toSlug } from "@/lib/category"
 import { StudioHeader } from "./studio-header"
 import { StudioFilters } from "./studio-filters"
 import { StudioGrid } from "./studio-grid"
 
 type PriceRange = { min?: number; max?: number }
 
-export function StudioExplorer({ studios }: { studios: Studio[] }) {
-  const [query, setQuery] = useState("")
-  const [category, setCategory] = useState("All")
-  const [sort, setSort] = useState<SortKey>("newest")
-  const [price, setPrice] = useState<PriceRange>({})
+type Props = {
+  studios: Studio[]
+  initialCategory?: string // from /studios?category=podcast
+}
 
+export function StudioExplorer({ studios, initialCategory }: Props) {
   // Categories come from your data, so new ones show up automatically
   const categories = useMemo(
     () => Array.from(new Set(studios.map((s) => s.category))).sort(),
     [studios]
   )
+
+  const [query, setQuery] = useState("")
+  const [category, setCategory] = useState(() =>
+    resolveCategory(initialCategory, categories)
+  )
+  const [sort, setSort] = useState<SortKey>("newest")
+  const [price, setPrice] = useState<PriceRange>({})
+
+  // If the URL changes (e.g. clicking a category link in the navbar), follow it
+  useEffect(() => {
+    setCategory(resolveCategory(initialCategory, categories))
+  }, [initialCategory, categories])
+
+  // Update the state and the URL (shareable link) without reloading the page
+  const handleCategoryChange = (value: string) => {
+    setCategory(value)
+    const params = new URLSearchParams(window.location.search)
+    if (value === "All") params.delete("category")
+    else params.set("category", toSlug(value))
+    const qs = params.toString()
+    window.history.replaceState(
+      null,
+      "",
+      qs ? `?${qs}` : window.location.pathname
+    )
+  }
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -51,7 +78,7 @@ export function StudioExplorer({ studios }: { studios: Studio[] }) {
           onSortChange={setSort}
           categories={categories}
           category={category}
-          onCategoryChange={setCategory}
+          onCategoryChange={handleCategoryChange}
           onPriceApply={setPrice}
         />
         <StudioGrid studios={results} />

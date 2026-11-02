@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { StudioCard } from "../studios/studio-card"
 import { getStudios } from "@/lib/studios"
+import { Button } from "../ui/button"
 
 const studios = await getStudios()
 
@@ -32,6 +33,20 @@ const FeturedStudio = () => {
           {studios.slice(0, 6).map((studio, i) => (
             <StudioCard key={i} studio={studio} />
           ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 flex justify-center">
+          <Button
+            asChild
+            size="lg"
+            className="h-12 rounded-xl bg-green-500 px-7 text-base font-semibold text-black shadow-lg shadow-green-500/25 hover:bg-green-400"
+          >
+            <Link href="/studios">
+              Exploring All Workspaces
+              <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
