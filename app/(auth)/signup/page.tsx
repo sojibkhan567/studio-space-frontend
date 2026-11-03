@@ -132,7 +132,6 @@ export default function RegisterPage() {
             name="image"
             icon={User}
             type="text"
-            required
             autoComplete="url"
             placeholder="https://images.unsplash.com/photo-..."
           />

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import type { Studio } from "@/app/types/studio"
+import { BookButton } from "../booking/book-button"
 
 function Row({
   label,
@@ -49,15 +50,17 @@ export function BookingCard({ studio }: { studio: Studio }) {
           <Row label="Availability">Instant Request Slots</Row>
         </div>
 
-        <Button
+        <BookButton studio={studio} />
+
+        {/* <Button
           asChild
           size="lg"
           className="h-11 w-full rounded-xl font-semibold"
         >
-          <Link href={`/studios/${studio.id}/book`}>
+          <Link href={`/booking`}>
             <CalendarDays className="size-4" /> Book Workspace Now
           </Link>
-        </Button>
+        </Button> */}
 
         <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
           You won&apos;t be charged immediately. Your reservation will enter

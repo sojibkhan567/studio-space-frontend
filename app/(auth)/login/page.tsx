@@ -16,7 +16,7 @@ import {
 } from "@/components/common/AuthShared"
 import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
 import toast from "react-hot-toast"
 
@@ -25,6 +25,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get("redirect") || "/"
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -36,10 +38,9 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const { error: authError } = await authClient.signIn.email({
+      const { data, error: authError } = await authClient.signIn.email({
         email: user.email,
         password: user.password,
-        callbackURL: "/",
       })
 
       if (authError) {
@@ -53,8 +54,9 @@ export default function LoginPage() {
         return
       }
 
-      router.push("/")
-      router.refresh()
+      if (data) {
+        router.replace(redirectTo)
+      }
     } catch {
       toast.error("Something went wrong. Please try again.")
     } finally {
@@ -70,7 +72,7 @@ export default function LoginPage() {
         <>
           New to StudioSpace?{" "}
           <Link
-            href="/register"
+            href="/signup"
             className="font-semibold text-green-700 hover:underline"
           >
             Create an account
