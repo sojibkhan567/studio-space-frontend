@@ -29,6 +29,7 @@ import {
 import { authClient } from "@/lib/auth-client"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
+import { getTokenFromClient } from "@/lib/getTokenFormClient"
 
 const CATEGORIES = [
   "Photo Studio",
@@ -115,29 +116,30 @@ export default function AddStudioForm() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const { imageUrl: _draft, ...data } = form
+    const data = Object.fromEntries(
+      Object.entries(form).filter(([key]) => key !== "imageUrl")
+    )
     const studioData = { ...data, images, amenities, user: HOST }
+
+    const token = await getTokenFromClient()
 
     // store data into db
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/studios`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(studioData),
-        }
-      )
-
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(studioData),
+      })
       const data = await res.json()
 
-      if (data) {
+      if (!res.ok) {
+        toast.error(data.message || "Somethings went wrong.")
+      } else {
         toast.success("Studio have been added successfully.")
         router.push("/studios")
-      } else {
-        toast.error("Something went wrong.")
       }
     } catch (error) {
       console.log(error)

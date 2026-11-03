@@ -279,7 +279,7 @@ function RowActions({
         className={`${base} text-primary hover:bg-primary/10 hover:text-primary`}
       >
         <Link
-          href={`/host/studios/${l.id}/edit`}
+          href={`/studios/edit/${l.id}`}
           aria-label={`Edit ${l.title}`}
           title="Edit listing"
         >
