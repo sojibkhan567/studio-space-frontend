@@ -11,10 +11,6 @@ export function BookButton({ studio }: { studio: BookableStudio }) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [checking, setChecking] = useState(false)
-  const user = {
-    name: "rony",
-    email: "example@gmail.com",
-  }
 
   const returnUrl = `/studios/${studio.id}`
 
@@ -57,7 +53,6 @@ export function BookButton({ studio }: { studio: BookableStudio }) {
 
       <BookingModal
         studio={studio}
-        user={user}
         open={open}
         onOpenChange={setOpen}
         onUnauthorized={() => router.push(loginUrl)}

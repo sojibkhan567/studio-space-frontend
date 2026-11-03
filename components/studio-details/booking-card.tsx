@@ -1,10 +1,8 @@
-import Link from "next/link"
-import { CalendarDays, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import type { Studio } from "@/app/types/studio"
-import { BookButton } from "../booking/book-button"
+import { BookButton } from "../bookings/book-button"
+import { Star } from "lucide-react"
 
 function Row({
   label,

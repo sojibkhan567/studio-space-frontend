@@ -13,17 +13,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-export type BookableStudio = {
-  id: string
-  title: string
-  rate: number
-  deposit: number
-  capacity: number
-}
+import { authClient } from "@/lib/auth-client"
+import { getTokenFromClient } from "@/lib/getTokenFormClient"
+import { Studio } from "@/app/types/studio"
 
 type Props = {
-  studio: BookableStudio
+  studio: Studio
   user?: { name?: string | null; email?: string | null } | null
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -40,13 +35,7 @@ const todayLocal = () =>
     .toISOString()
     .slice(0, 10)
 
-export function BookingModal({
-  studio,
-  user,
-  open,
-  onOpenChange,
-  onUnauthorized,
-}: Props) {
+export function BookingModal({ studio, user, open, onOpenChange }: Props) {
   const [date, setDate] = useState(todayLocal())
   const [startTime, setStartTime] = useState("10:00")
   const [endTime, setEndTime] = useState("14:00")
@@ -84,28 +73,49 @@ export function BookingModal({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    const { data: session } = await authClient.getSession()
+    const token = await getTokenFromClient()
+
     const problem = validate()
     if (problem) return setError(problem)
 
     setError(null)
     setSubmitting(true)
-    try {
-      const res = await fetch("/bookings", {
-        method: "POST",
-        body: JSON.stringify({
-          studioId: studio.id,
-          date,
-          startTime,
-          endTime,
-          guests: Number(guests),
-          notes: notes.trim(),
-        }),
-      })
 
-      if (res.status === 401) {
-        onOpenChange(false)
-        return onUnauthorized() // session expired -> login
-      }
+    const now = new Date()
+
+    const bookingsData = {
+      userId: session?.user.id,
+      studioId: studio.id,
+      studio: {
+        title: studio.title,
+        address: studio.address,
+        image: studio.images?.[0] ?? null,
+      },
+      date,
+      startTime,
+      endTime,
+      hours,
+      guests: Number(guests),
+      notes: String(notes).trim().slice(0, 500),
+      rate: studio.rate,
+      deposit: studio.deposit,
+      total: Math.round(studio.rate * hours + studio.deposit),
+      status: "pending",
+      createdAt: now,
+      updatedAt: now,
+    }
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingsData),
+      })
 
       const json = await res.json().catch(() => null)
       if (!res.ok) {
