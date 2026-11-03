@@ -27,6 +27,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { authClient } from "@/lib/auth-client"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 const CATEGORIES = [
   "Photo Studio",
@@ -86,6 +88,8 @@ export default function AddStudioForm() {
   const [failed, setFailed] = useState<string[]>([])
   const MAX_IMAGES = 4
 
+  const router = useRouter()
+
   const addImage = () => {
     const url = form.imageUrl.trim()
     if (!url || images.includes(url) || images.length >= MAX_IMAGES) return
@@ -128,7 +132,13 @@ export default function AddStudioForm() {
       )
 
       const data = await res.json()
-      console.log(data)
+
+      if (data) {
+        toast.success("Studio have been added successfully.")
+        router.push("/studios")
+      } else {
+        toast.error("Something went wrong.")
+      }
     } catch (error) {
       console.log(error)
     }

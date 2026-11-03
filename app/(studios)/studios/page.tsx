@@ -1,7 +1,7 @@
 import { getStudios } from "@/lib/studios"
 import { StudioExplorer } from "@/components/studios/studio-explorer"
 
-export const metadata = { title: "Explore Creative Studios" }
+export const metadata = { title: "Studio Space | Explore Creative Studios" }
 
 // Next.js 15/16: searchParams is a Promise
 export default async function StudiosPage({

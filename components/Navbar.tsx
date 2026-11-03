@@ -8,10 +8,11 @@ import {
   CalendarCheck,
   Camera,
   ChevronDown,
+  CirclePlus,
   Heart,
   LogOut,
   Menu,
-  User,
+  Table,
 } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -167,10 +168,22 @@ export default function Navbar() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
+                <div className="space-y-1 px-2 py-2">
+                  <p className="text-xs text-gray-400">Sign in as</p>
+                  <h2 className="text-sm font-bold">{user.name}</h2>
+                  <p className="text-xs text-gray-400">{user.email}</p>
+                </div>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/profile">
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
+                  <Link href="/add-studio">
+                    <CirclePlus className="mr-2 h-4 w-4" />
+                    Add New Studio
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/my-listing">
+                    <Table className="mr-2 h-4 w-4" />
+                    My Studio Listing
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -180,9 +193,9 @@ export default function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/saved">
+                  <Link href="/saved-wishlist">
                     <Heart className="mr-2 h-4 w-4" />
-                    Saved Studios
+                    Saved Wishlist
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -214,9 +227,15 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuItem asChild>
-                  <Link href="/profile">
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
+                  <Link href="/add-studio">
+                    <CirclePlus className="mr-2 h-4 w-4" />
+                    Add New Studio
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/my-listing">
+                    <Table className="mr-2 h-4 w-4" />
+                    My Studio Listing
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -226,9 +245,9 @@ export default function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/saved">
+                  <Link href="/saved-wishlist">
                     <Heart className="mr-2 h-4 w-4" />
-                    Saved Studios
+                    Saved Wishlist
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
