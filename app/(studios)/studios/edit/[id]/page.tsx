@@ -33,9 +33,10 @@ import {
 } from "@/components/ui/select"
 import { authClient } from "@/lib/auth-client"
 import toast from "react-hot-toast"
+import { getTokenFromClient } from "@/lib/getTokenFormClient"
 
 const BACKEND = process.env.NEXT_PUBLIC_API_URL
-const METHOD = "PATCH" // or "PATCH", whatever your backend route uses
+const METHOD = "PATCH"
 const MAX_IMAGES = 4
 
 const CATEGORIES = [
@@ -196,6 +197,9 @@ export default function EditStudioPage({
   // 2) Save changes
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const token = await getTokenFromClient()
+
     const { imageUrl: _draft, ...data } = form
     const studioData = { ...data, images, amenities, user: host }
 
@@ -203,7 +207,10 @@ export default function EditStudioPage({
     try {
       const res = await fetch(`${BACKEND}/studios/${id}`, {
         method: METHOD,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(studioData),
       })
 

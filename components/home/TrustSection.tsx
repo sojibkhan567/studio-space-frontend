@@ -44,6 +44,7 @@ const stats = [
 export default function TrustSection() {
   return (
     <section
+      id="about-section"
       aria-labelledby="trust-heading"
       className="relative overflow-hidden bg-muted/30"
     >

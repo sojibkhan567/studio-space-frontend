@@ -40,7 +40,7 @@ const links = [
   { label: "Home", href: "/" },
   { label: "Explore Studios", href: "/studios" },
   { label: "How It Works", href: "/#how-it-works" },
-  { label: "About Us", href: "/about" },
+  { label: "About Us", href: "/#about-section" },
 ]
 
 const activeCls = "bg-primary/10 font-semibold text-primary"
