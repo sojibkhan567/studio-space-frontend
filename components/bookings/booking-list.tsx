@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import type { Booking } from "@/app/types/bookings"
+import type { Booking } from "@/types/bookings"
 import { BookingCard } from "./booking-card"
 import { ReceiptDialog } from "./receipt-dialog"
 import { CancelDialog } from "./cancel-dialog"
-import { EmptyBookings } from "./empty-bookings"
+import EmptyState from "../common/empty-states"
 
 export function BookingList({
   initialBookings,
@@ -20,7 +20,7 @@ export function BookingList({
   const confirmCancel = async () => {
     if (!cancelTarget) return
 
-    const res = await fetch(`/bookings/${cancelTarget.id}/cancel`, {
+    const res = await fetch(`/bookings/${cancelTarget._id}/cancel`, {
       method: "PATCH",
     })
     if (!res.ok) {
@@ -30,19 +30,25 @@ export function BookingList({
 
     setBookings((prev) =>
       prev.map((b) =>
-        b.id === cancelTarget.id ? { ...b, status: "cancelled" } : b
+        b._id === cancelTarget._id ? { ...b, status: "cancelled" } : b
       )
     )
     setCancelTarget(null)
   }
 
-  if (bookings.length === 0) return <EmptyBookings />
+  if (bookings.length === 0) {
+    return (
+      <div className="mt-8">
+        <EmptyState btnTitle="Explore Studios" href="/studios" />
+      </div>
+    )
+  }
 
   return (
     <>
       <ul className="mt-8 space-y-4">
-        {bookings.map((booking) => (
-          <li key={booking.id}>
+        {bookings.map((booking, i) => (
+          <li key={i}>
             <BookingCard
               booking={booking}
               onReceipt={setReceipt}

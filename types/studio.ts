@@ -41,7 +41,7 @@ export const SORT_OPTIONS = {
 export type SortKey = keyof typeof SORT_OPTIONS
 
 export type Listing = {
-  id: string
+  _id: string
   title: string
   category: string
   address: string

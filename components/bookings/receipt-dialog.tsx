@@ -9,8 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-import { formatHours, shortId } from "@/lib/bookings"
-import type { Booking } from "@/app/types/bookings"
+import { formatHours } from "@/lib/bookings"
+import type { Booking } from "@/types/bookings"
 import { StatusBadge } from "./status-badge"
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
@@ -41,7 +41,7 @@ export function ReceiptDialog({
               <DialogTitle className="text-xl leading-tight font-extrabold">
                 {b.studio.title}
               </DialogTitle>
-              <DialogDescription>Booking {shortId(b.id)}</DialogDescription>
+              <DialogDescription>Booking {b._id}</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-2.5">
@@ -60,11 +60,11 @@ export function ReceiptDialog({
             <div className="space-y-2.5">
               <Row
                 label={`$${b.studio.rate} × ${formatHours(b.hours)}`}
-                value={`$${(b.studio.rate * b.hours).toLocaleString()}`}
+                value={`$${b.studio.rate * b.hours}`}
               />
               <Row
                 label="Refundable security deposit"
-                value={`$${b.studio.deposit.toLocaleString()}`}
+                value={`$${b.studio.deposit}`}
               />
               <div className="flex items-center justify-between border-t pt-3 font-bold">
                 <span>Total</span>

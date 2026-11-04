@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import type { SortKey, Studio } from "@/app/types/studio"
+import type { SortKey, Studio } from "@/types/studio"
 import { resolveCategory, toSlug } from "@/lib/category"
 import { StudioHeader } from "./studio-header"
 import { StudioFilters } from "./studio-filters"

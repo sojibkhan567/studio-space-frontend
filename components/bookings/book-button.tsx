@@ -4,8 +4,10 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { CalendarDays, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { BookingModal, type BookableStudio } from "./booking-modal"
+import { BookingModal } from "./booking-modal"
 import { authClient } from "@/lib/auth-client"
+
+type BookableStudio = React.ComponentProps<typeof BookingModal>["studio"]
 
 export function BookButton({ studio }: { studio: BookableStudio }) {
   const router = useRouter()

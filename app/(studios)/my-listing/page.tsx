@@ -3,11 +3,20 @@ import { Building2, CirclePlus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
-import { getStudios } from "@/lib/studios"
 import StudioListingTable from "@/components/my-list/listing-table"
+import { getTokenFromServer } from "@/lib/getTokenFormServer"
 
 export default async function MyListingsPage() {
-  const studios = await getStudios()
+  const token = await getTokenFromServer()
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios/me`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  const data = await res.json()
+  const studios = Array.isArray(data) ? data : []
 
   return (
     <main className="min-h-screen bg-muted/30 pb-16">

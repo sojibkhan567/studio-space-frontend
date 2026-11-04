@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import type { Studio } from "@/app/types/studio"
+import type { Studio } from "@/types/studio"
 import { StudioActions } from "./studio-actions"
 
 export function StudioDetailHeader({ studio }: { studio: Studio }) {

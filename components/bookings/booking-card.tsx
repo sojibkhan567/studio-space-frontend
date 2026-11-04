@@ -11,8 +11,8 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { formatHours, shortId } from "@/lib/bookings"
-import type { Booking } from "@/app/types/bookings"
+import { formatHours } from "@/lib/bookings"
+import type { Booking } from "@/types/bookings"
 import { StatusBadge } from "./status-badge"
 
 type Props = {
@@ -29,7 +29,7 @@ export function BookingCard({ booking: b, onReceipt, onCancel }: Props) {
     <Card className="rounded-2xl p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         {/* Thumbnail */}
-        <div className="h-24 w-full shrink-0 overflow-hidden rounded-xl bg-muted sm:h-17.5 sm:w-23">
+        <div className="h-30 w-full shrink-0 overflow-hidden rounded-xl bg-muted sm:h-17.5 sm:w-23">
           {b.studio.image && !imageFailed ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -50,7 +50,7 @@ export function BookingCard({ booking: b, onReceipt, onCancel }: Props) {
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={b.status} />
             <span className="text-[11px] text-muted-foreground">
-              ID: {shortId(b.id)}
+              ID: {b._id}
             </span>
           </div>
 

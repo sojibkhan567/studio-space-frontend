@@ -1,6 +1,6 @@
 import { Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import type { Studio } from "@/app/types/studio"
+import type { Studio } from "@/types/studio"
 
 export function StudioStats({ studio }: { studio: Studio }) {
   const stats = [

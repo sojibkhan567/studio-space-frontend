@@ -1,6 +1,6 @@
 import { CircleCheck, CircleX, Clock, Flag } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { BookingStatus } from "@/app/types/bookings"
+import type { BookingStatus } from "@/types/bookings"
 
 const STATUS = {
   pending: {

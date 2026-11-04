@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import type { Studio } from "@/app/types/studio"
+import type { Studio } from "@/types/studio"
 import { BookButton } from "../bookings/book-button"
 import { Star } from "lucide-react"
 

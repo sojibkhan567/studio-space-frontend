@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { SORT_OPTIONS, type SortKey } from "@/app/types/studio"
+import { SORT_OPTIONS, type SortKey } from "@/types/studio"
 
 export function SortSelect({
   value,

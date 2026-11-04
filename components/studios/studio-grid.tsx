@@ -1,4 +1,4 @@
-import type { Studio } from "@/app/types/studio"
+import type { Studio } from "@/types/studio"
 import { StudioCard } from "./studio-card"
 import { EmptyState } from "./empty-state"
 

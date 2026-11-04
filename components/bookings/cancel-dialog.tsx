@@ -12,7 +12,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import type { Booking } from "@/app/types/bookings"
+import type { Booking } from "@/types/bookings"
 
 type Props = {
   booking: Booking | null

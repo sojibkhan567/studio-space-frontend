@@ -1,4 +1,4 @@
-import type { Studio, StudioApi } from "@/app/types/studio"
+import type { Studio, StudioApi } from "@/types/studio"
 
 // Mongo ObjectIds start with a creation timestamp (first 8 hex chars)
 function timeFromObjectId(id: string): number {

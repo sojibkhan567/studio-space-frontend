@@ -1,5 +1,5 @@
 "use client"
-import { Listing } from "@/app/types/studio"
+import { Listing } from "@/types/studio"
 import { useState } from "react"
 import { MapPin, ExternalLink, Trash2 } from "lucide-react"
 import {
@@ -10,14 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  CirclePlus,
-  ImageOff,
-  Loader2,
-  SquarePen,
-  TriangleAlert,
-  Warehouse,
-} from "lucide-react"
+import { ImageOff, Loader2, SquarePen, TriangleAlert } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
@@ -33,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Card } from "../ui/card"
 import toast from "react-hot-toast"
+import EmptyState from "../common/empty-states"
 
 type ListingsProps = {
   studios: Listing[]
@@ -50,7 +44,7 @@ const StudioListingTable = ({ studios }: ListingsProps) => {
     setActionError(null)
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/studios/${toDelete.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/studios/${toDelete._id}`,
         {
           method: "DELETE",
         }
@@ -59,7 +53,7 @@ const StudioListingTable = ({ studios }: ListingsProps) => {
         const json = await res.json().catch(() => null)
         toast.error(json?.message ?? "Could not delete this studio.")
       }
-      setListings((prev) => prev?.filter((l) => l.id !== toDelete.id) ?? prev)
+      setListings((prev) => prev?.filter((l) => l._id !== toDelete._id) ?? prev)
     } catch (e) {
       setActionError(
         e instanceof Error ? e.message : "Could not delete this studio."
@@ -85,7 +79,7 @@ const StudioListingTable = ({ studios }: ListingsProps) => {
         {listings === null ? (
           <LoadingSkeleton />
         ) : listings.length === 0 ? (
-          <EmptyState />
+          <EmptyState btnTitle="Add Studio" href="/add-studio" />
         ) : (
           <>
             {/* Desktop table */}
@@ -114,7 +108,7 @@ const StudioListingTable = ({ studios }: ListingsProps) => {
                 </TableHeader>
                 <TableBody>
                   {listings.map((l) => (
-                    <TableRow key={l.id} className="hover:bg-primary/5">
+                    <TableRow key={l._id} className="hover:bg-primary/5">
                       <TableCell className="py-3 pl-6">
                         <StudioCell listing={l} />
                       </TableCell>
@@ -152,7 +146,7 @@ const StudioListingTable = ({ studios }: ListingsProps) => {
             {/* Mobile cards */}
             <div className="space-y-3 md:hidden">
               {listings.map((l) => (
-                <Card key={l.id} className="gap-3 rounded-2xl p-4 shadow-sm">
+                <Card key={l._id} className="gap-3 rounded-2xl p-4 shadow-sm">
                   <StudioCell listing={l} />
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <Badge
@@ -263,7 +257,7 @@ function RowActions({
     <div className="flex items-center gap-1">
       <Button asChild variant="ghost" size="icon" className={base}>
         <Link
-          href={`/studios/${l.id}`}
+          href={`/studios/${l._id}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`View ${l.title} (opens in a new tab)`}
@@ -279,7 +273,7 @@ function RowActions({
         className={`${base} text-primary hover:bg-primary/10 hover:text-primary`}
       >
         <Link
-          href={`/studios/edit/${l.id}`}
+          href={`/studios/edit/${l._id}`}
           aria-label={`Edit ${l.title}`}
           title="Edit listing"
         >
@@ -319,25 +313,6 @@ function LoadingSkeleton() {
         </div>
       ))}
     </Card>
-  )
-}
-
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed bg-background py-16 text-center">
-      <div className="grid size-14 place-items-center rounded-full bg-primary/10 text-primary">
-        <Warehouse className="size-7" />
-      </div>
-      <h2 className="text-lg font-bold">No studios listed yet</h2>
-      <p className="max-w-xs text-sm text-muted-foreground">
-        Publish your first creative space and start receiving booking requests.
-      </p>
-      <Button asChild className="mt-2 rounded-xl">
-        <Link href="/add-studio">
-          <CirclePlus className="size-4" /> Add New Studio
-        </Link>
-      </Button>
-    </div>
   )
 }
 

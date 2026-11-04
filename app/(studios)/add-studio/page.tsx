@@ -32,10 +32,10 @@ import { useRouter } from "next/navigation"
 import { getTokenFromClient } from "@/lib/getTokenFormClient"
 
 const CATEGORIES = [
-  "Photo Studio",
-  "Recording Studio",
-  "Podcast Studio",
-  "Film Stage",
+  "Photo Studios",
+  "Sound Stages",
+  "Podcast Rooms",
+  "Music Suites",
   "Art & Ceramics Studio",
 ]
 
