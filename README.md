@@ -6,11 +6,11 @@ Studio owners can list their spaces with pricing, amenities, capacity, and locat
 
 ## 🌐 Live Website
 
-**Live Site:** `https://your-live-site-url.vercel.app`
+**Live Site:** [LIVE Website](https://studio-space-app.vercel.app)
 
-**Client Repository:** `https://github.com/your-username/studiospace-client`
+**Client Repository:** [Client Repository](https://github.com/sojibkhan567/studio-space-frontend)
 
-**Server Repository:** `https://github.com/your-username/studiospace-server`
+**Server Repository:** [Server Repository](https://github.com/sojibkhan567/studio-space-backend)
 
 ---
 
@@ -334,41 +334,12 @@ PUT /studios/:id
 DELETE /studios/:id
 ```
 
-### Create Booking
-
-## 📌 Project Requirements Implemented
-
-- Peer-to-peer creative workspace marketplace
-- Studio discovery and filtering
-- Dynamic studio listings
-- Authentication and authorization
-- Google authentication
-- Studio CRUD operations
-- MongoDB database integration
-- Booking management
-- Booking status system
-- Double-booking prevention
-- JWT security
-- Wishlist functionality
-- Dark/light theme
-- Image upload integration
-- Toast notifications
-- Loading states
-- Empty states
-- Custom 404 page
-- Responsive design
-- Modern studio-focused UI
-
----
-
 ## 👨‍💻 Developer
 
 **Md. Sojib Hossain**
 
 Full Stack Developer  
 CSE Student
-
----
 
 ## 📜 License
 
