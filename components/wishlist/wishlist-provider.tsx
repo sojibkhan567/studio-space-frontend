@@ -50,8 +50,13 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
         const data = await res.json()
 
+        if (res.status === 401) {
+          setWishlistIds([])
+          return
+        }
+
         if (!res.ok) {
-          throw new Error(data.message)
+          throw new Error(data.message || "Wishlist request failed")
         }
 
         const ids = data.wishlist.map(
