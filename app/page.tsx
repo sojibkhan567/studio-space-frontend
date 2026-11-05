@@ -4,6 +4,8 @@ import FeaturedStudio from "@/components/home/FeturedStudio"
 import HowItWorks from "@/components/home/WorkSection"
 import TrustSection from "@/components/home/TrustSection"
 
+export const metadata = { title: "HOME | Studio Space Application" }
+
 export default function Page() {
   return (
     <>

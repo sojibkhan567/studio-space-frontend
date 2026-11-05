@@ -5,6 +5,8 @@ import { Lock, Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { authClient } from "@/lib/auth-client"
+import toast from "react-hot-toast"
 
 export function GoogleLogo() {
   return (
@@ -30,15 +32,24 @@ export function GoogleLogo() {
 }
 
 export function GoogleButton({ label }: { label: string }) {
+  // user sign up with google
+  const handleGoogleSignIn = async () => {
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+    })
+
+    if (error) {
+      toast.error(error.message || "Failed")
+    } else {
+      toast.success("Welcome! login succesfull.")
+    }
+  }
   return (
     <Button
       type="button"
       variant="outline"
       className="h-11 w-full gap-3 text-sm font-medium"
-      onClick={() => {
-        // TODO: signIn("google") with NextAuth, or supabase.auth.signInWithOAuth({ provider: "google" })
-        console.log("Google auth")
-      }}
+      onClick={handleGoogleSignIn}
     >
       <GoogleLogo />
       {label}

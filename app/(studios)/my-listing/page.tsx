@@ -3,7 +3,7 @@ import { Building2, CirclePlus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
-export const metadata = { title: "Studio Space | My Studio Listing" }
+export const metadata = { title: "My Listing | Studio Space Application" }
 
 import StudioListingTable from "@/components/my-list/listing-table"
 import { getTokenFromServer } from "@/lib/getTokenFormServer"

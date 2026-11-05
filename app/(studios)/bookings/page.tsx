@@ -2,7 +2,7 @@ import { BookingsHeader } from "@/components/bookings/bookings-header"
 import { BookingList } from "@/components/bookings/booking-list"
 import { getTokenFromServer } from "@/lib/getTokenFormServer"
 
-export const metadata = { title: "Studio Space | My Studio Bookings" }
+export const metadata = { title: "My Bookings | Studio Space Application" }
 
 export default async function BookingsPage() {
   const token = await getTokenFromServer()
