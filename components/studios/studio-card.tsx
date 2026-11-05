@@ -1,20 +1,15 @@
-"use client"
-
-import { useState } from "react"
 import Link from "next/link"
-import { ArrowRight, Heart, MapPin, Star, Users } from "lucide-react"
+import { ArrowRight, MapPin, Star, Users } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
 import type { Studio } from "@/types/studio"
 import { StudioImage } from "./studio-image"
+import WishlistButton from "../wishlist/wishlist-button"
 
 const MAX_AMENITIES = 2
 
 export function StudioCard({ studio: s }: { studio: Studio }) {
-  // Local only for now: swap for an API call when you add favorites
-  const [saved, setSaved] = useState(false)
   const extra = s.amenities.length - MAX_AMENITIES
 
   return (
@@ -28,19 +23,10 @@ export function StudioCard({ studio: s }: { studio: Studio }) {
           {s.category}
         </Badge>
 
-        <button
-          onClick={() => setSaved((v) => !v)}
-          aria-label={saved ? "Remove from saved" : "Save studio"}
-          aria-pressed={saved}
+        <WishlistButton
           className="absolute top-3 right-3 grid size-8 place-items-center rounded-full bg-background/90 backdrop-blur transition-colors hover:bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-        >
-          <Heart
-            className={cn(
-              "size-4",
-              saved ? "fill-primary text-primary" : "text-foreground"
-            )}
-          />
-        </button>
+          studioId={s.id}
+        />
 
         <div className="absolute inset-x-3 bottom-3 flex items-end justify-between">
           <div className="rounded-lg bg-primary px-2.5 py-1 text-primary-foreground">

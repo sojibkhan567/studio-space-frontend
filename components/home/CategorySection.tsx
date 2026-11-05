@@ -31,7 +31,7 @@ const CATEGORIES: Category[] = [
     description:
       "Acoustic blackboxes, green screens, camlock power, and drive-in access.",
     spaces: "16+ Spaces",
-    slug: "film-stage",
+    slug: "sound-stages",
     icon: Film,
     tile: "bg-violet-50 text-violet-500",
   },
@@ -58,7 +58,7 @@ const CATEGORIES: Category[] = [
     description:
       "Ceramic kilns, pottery wheels, printmaking presses, and raw maker space.",
     spaces: "11+ Spaces",
-    slug: "art-workshop",
+    slug: "art-ceramics-studio",
     icon: Palette,
     tile: "bg-rose-50 text-rose-500",
   },

@@ -1,12 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { Check, Heart, Share2 } from "lucide-react"
+import { Check, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import WishlistButton from "../wishlist/wishlist-button"
 
-export function StudioActions({ title }: { title: string }) {
-  const [wishlisted, setWishlisted] = useState(false) // connect to your API later
+export function StudioActions({
+  title,
+  studioId,
+}: {
+  title: string
+  studioId: string
+}) {
+  //const [wishlisted, setWishlisted] = useState(false) // connect to your API later
   const [copied, setCopied] = useState(false)
 
   const share = async () => {
@@ -39,7 +45,13 @@ export function StudioActions({ title }: { title: string }) {
         )}
         {copied ? "Link copied" : "Share"}
       </Button>
-      <Button
+
+      <WishlistButton
+        className="rounded-lg"
+        studioId={studioId}
+        label="Wishlist"
+      />
+      {/* <Button
         variant="outline"
         size="sm"
         className="rounded-lg"
@@ -50,7 +62,7 @@ export function StudioActions({ title }: { title: string }) {
           className={cn("size-4", wishlisted && "fill-primary text-primary")}
         />
         Wishlist
-      </Button>
+      </Button> */}
     </div>
   )
 }

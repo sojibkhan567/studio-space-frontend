@@ -116,10 +116,14 @@ export default function Navbar() {
 
   const authButtons = (
     <div className="flex items-center gap-2">
-      <Button asChild variant="ghost" className="rounded-full">
+      <Button
+        asChild
+        variant="ghost"
+        className="rounded-full border border-gray-600 px-4 py-5"
+      >
         <Link href="/login">Log in</Link>
       </Button>
-      <Button asChild className="rounded-full">
+      <Button asChild className="rounded-full px-4 py-5">
         <Link href="/signup">Sign up</Link>
       </Button>
     </div>
@@ -193,7 +197,7 @@ export default function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/saved-wishlist">
+                  <Link href="/wishlist">
                     <Heart className="mr-2 h-4 w-4" />
                     Saved Wishlist
                   </Link>
@@ -245,7 +249,7 @@ export default function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/saved-wishlist">
+                  <Link href="/wishlist">
                     <Heart className="mr-2 h-4 w-4" />
                     Saved Wishlist
                   </Link>

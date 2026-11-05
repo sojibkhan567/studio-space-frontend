@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { Toaster } from "react-hot-toast"
+import { WishlistProvider } from "@/components/wishlist/wishlist-provider"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -34,9 +35,11 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <WishlistProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </WishlistProvider>
           <Toaster position="top-right" reverseOrder={false} />
         </ThemeProvider>
       </body>

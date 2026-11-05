@@ -20,7 +20,7 @@ export function StudioDetailHeader({ studio }: { studio: Studio }) {
           {studio.title}
         </h1>
       </div>
-      <StudioActions title={studio.title} />
+      <StudioActions title={studio.title} studioId={studio.id} />
     </header>
   )
 }

@@ -10,13 +10,15 @@ import { getTokenFromServer } from "@/lib/getTokenFormServer"
 
 export default async function MyListingsPage() {
   const token = await getTokenFromServer()
-
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios/me`, {
     headers: {
       authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   })
+  if (!res.ok) {
+    console.log(`Failed to fetch studios: ${res.status}`)
+  }
   const data = await res.json()
   const studios = Array.isArray(data) ? data : []
 
